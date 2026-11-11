@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>eBarangay Resident Portal - Single File Viewport Mode</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        brand: {
+                            50: '#eff6ff', 100: '#dbeafe', 500: '#3b82f6',
+                            600: '#2563eb', 700: '#1d4ed8', 800: '#1e40af', 900: '#1e3a8a'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col justify-between">
+
+    <div>
+        <!-- STICKY TOP NAVIGATION BAR -->
+        <header class="sticky top-0 z-50 bg-white/95 backdrop-blur shadow-sm border-b border-slate-200">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+                <div class="flex items-center space-x-3 cursor-pointer" onclick="switchView('overview')">
+                    <div class="bg-brand-600 text-white w-10 h-10 rounded-xl flex items-center justify-center font-bold text-xl shadow-md">
+                        <i class="fa-solid font-bold fa-building-shield"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-lg font-bold text-slate-900 leading-tight">eBarangay Portal</h1>
+                        <p class="text-xs text-slate-500 font-medium">Barangay San Jose • Resident Services</p>
+                    </div>
+                </div>
+
+                <!-- Navigation Tabs / Directory Switcher -->
+                <nav class="hidden md:flex items-center space-x-1 lg:space-x-2">
+                    <button onclick="switchView('overview')" id="nav-btn-overview" class="px-3 py-2 text-xs font-semibold rounded-lg transition-colors text-brand-700 bg-brand-50">
+                        <i class="fa-solid fa-house mr-1"></i> Overview Hub
+                    </button>
+                    <button onclick="switchView('emergency')" id="nav-btn-emergency" class="px-3 py-2 text-xs font-semibold rounded-lg transition-colors text-rose-600 bg-rose-50 hover:bg-rose-100">
+                        <i class="fa-solid fa-phone-volume mr-1"></i> Emergency
+                    </button>
+                    <button onclick="switchView('officials')" id="nav-btn-officials" class="px-3 py-2 text-xs font-semibold rounded-lg transition-colors text-slate-700 hover:text-brand-600 hover:bg-slate-100">
+                        <i class="fa-solid fa-user-clock mr-1"></i> Duty Schedule
+                    </button>
+                    <button onclick="switchView('reporting')" id="nav-btn-reporting" class="px-3 py-2 text-xs font-semibold rounded-lg transition-colors text-slate-700 hover:text-brand-600 hover:bg-slate-100">
+                        <i class="fa-solid fa-circle-exclamation mr-1"></i> Hazard & Complaints
+                    </button>
+                    <button onclick="switchView('draft-forms')" id="nav-btn-draft-forms" class="px-3 py-2 text-xs font-semibold rounded-lg transition-colors text-slate-700 hover:text-brand-600 hover:bg-slate-100">
+                        <i class="fa-solid fa-file-signature mr-1"></i> Request Forms
+                    </button>
+                    <button onclick="switchView('events')" id="nav-btn-events" class="px-3 py-2 text-xs font-semibold rounded-lg transition-colors text-slate-700 hover:text-brand-600 hover:bg-slate-100">
+                        <i class="fa-solid fa-calendar-days mr-1"></i> Events & Today
+                    </button>
+                </nav>
+
+                <button onclick="switchView('tracking')" class="bg-brand-600 hover:bg-brand-700 text-white text-xs font-bold px-4 py-2 rounded-lg shadow-sm transition-all flex items-center gap-2">
+                    <i class="fa-solid fa-magnifying-glass"></i> Track Report
+                </button>
+            </div>
+        </header>
+
+        <!-- SUB-HEADER DIRECTORY PATH BREADCRUMB -->
+        <div class="bg-white border-b border-slate-200 px-4 sm:px-6 lg:px-8 py-2.5">
+            <div class="max-w-7xl mx-auto flex items-center justify-between text-xs text-slate-500">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-folder-open text-brand-600"></i>
+                    <span>Directory Path:</span>
+                    <span id="breadcrumbPath" class="font-mono font-bold text-slate-900 bg-slate-100 px-2 py-0.5 rounded">/overview</span>
+                </div>
+                <div class="hidden sm:block text-slate-400">
+                    Single-File Full Screen Viewport Router
+                </div>
+            </div>
+        </div>
+
+        <!-- MAIN VIEWPORT CONTAINER (SHOWS ONE SCREEN AT A TIME BASED ON DIRECTORY URL HASH) -->
+        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+            <!-- VIEW 1: OVERVIEW DASHBOARD (ALL-IN-ONE HOME) -->
+            <div id="view-overview" class="view-section space-y-8">
+                <div class="bg-gradient-to-r from-brand-900 via-brand-800 to-blue-900 rounded-2xl p-8 text-white shadow-xl flex flex-col md:flex-row items-center justify-between gap-6">
+                    <div>
+                        <span class="bg-white/10 text-brand-200 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Barangay San Jose Official Portal</span>
+                        <h2 class="text-3xl font-black mt-3">Welcome to eBarangay Digital Hub</h2>
+                        <p class="text-blue-100 text-sm mt-2 max-w-xl">Access 24/7 duty schedules, request document drafts with next-day pickup, and report public safety hazards instantly.</p>
+                    </div>
+                    <div class="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+                        <button onclick="switchView('officials')" class="bg-white text-brand-900 hover:bg-blue-50 font-bold px-5 py-3 rounded-xl text-sm transition-all shadow text-center">
+                            <i class="fa-solid fa-user-clock mr-2"></i> View Duty Schedule
+                        </button>
+                        <button onclick="switchView('draft-forms')" class="bg-brand-600 hover:bg-brand-700 text-white font-bold px-5 py-3 rounded-xl text-sm transition-all shadow text-center">
+                            <i class="fa-solid fa-file-signature mr-2"></i> Request Documents
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Quick Navigation Cards Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div onclick="switchView('emergency')" class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:border-rose-400 hover:shadow-md transition-all cursor-pointer group">
+                        <div class="w-12 h-12 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center text-xl mb-4 group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-phone-volume"></i>
+                        </div>
+                        <h3 class="font-bold text-slate-900 text-base">Emergency Hotlines</h3>
+                        <p class="text-xs text-slate-500 mt-1">One-touch calling for Police, Fire, and Medical assistance.</p>
+                    </div>
+
+                    <div onclick="switchView('officials')" class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:border-brand-400 hover:shadow-md transition-all cursor-pointer group">
+                        <div class="w-12 h-12 rounded-xl bg-blue-50 text-brand-600 flex items-center justify-center text-xl mb-4 group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-user-clock"></i>
+                        </div>
+                        <h3 class="font-bold text-slate-900 text-base">24/7 Duty Schedule</h3>
+                        <p class="text-xs text-slate-500 mt-1">Check active duty officials and full 24-hour shift roster.</p>
+                    </div>
+
+                    <div onclick="switchView('reporting')" class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:border-amber-400 hover:shadow-md transition-all cursor-pointer group">
+                        <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-xl mb-4 group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+                        </div>
+                        <h3 class="font-bold text-slate-900 text-base">Hazard & Complaints</h3>
+                        <p class="text-xs text-slate-500 mt-1">Submit public safety risks and track resolution progress.</p>
+                    </div>
+
+                    <div onclick="switchView('events')" class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:border-emerald-400 hover:shadow-md transition-all cursor-pointer group">
+                        <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-xl mb-4 group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-calendar-days"></i>
+                        </div>
+                        <h3 class="font-bold text-slate-900 text-base">Events & Today's Feed</h3>
+                        <p class="text-xs text-slate-500 mt-1">View community calendar, health drives, and advisories.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIEW 2: EMERGENCY HOTLINES FULL SCREEN -->
+            <div id="view-emergency" class="view-section hidden space-y-6">
+                <div class="flex items-center justify-between pb-4 border-b border-slate-200">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-rose-600 bg-rose-50 px-2.5 py-1 rounded">24/7 Immediate Response</span>
+                        <h2 class="text-2xl font-black text-slate-900 mt-1">Emergency Assistance Directory</h2>
+                    </div>
+                    <button onclick="switchView('overview')" class="text-xs font-bold text-slate-600 bg-white border border-slate-200 px-3 py-2 rounded-lg hover:bg-slate-50">
+                        <i class="fa-solid fa-arrow-left mr-1"></i> Back to Overview
+                    </button>
+                </div>
+
+                <div class="bg-gradient-to-r from-rose-600 via-red-600 to-rose-700 rounded-2xl p-8 text-white shadow-xl">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <a href="tel:911" class="bg-white/10 hover:bg-white/20 border border-white/20 text-white p-6 rounded-2xl text-center transition-all group flex flex-col items-center justify-center">
+                            <i class="fa-solid fa-kit-medical text-4xl mb-3 text-rose-200 group-hover:scale-110 transition-transform"></i>
+                            <span class="text-xs uppercase tracking-wider font-semibold">National Emergency</span>
+                            <span class="text-2xl font-black mt-1">911</span>
+                        </a>
+
+                        <a href="tel:09171234567" class="bg-white/10 hover:bg-white/20 border border-white/20 text-white p-6 rounded-2xl text-center transition-all group flex flex-col items-center justify-center">
+                            <i class="fa-solid fa-shield-halved text-4xl mb-3 text-rose-200 group-hover:scale-110 transition-transform"></i>
+                            <span class="text-xs uppercase tracking-wider font-semibold">PNP Police Station</span>
+                            <span class="text-sm font-bold mt-2">0917-123-4567</span>
+                        </a>
+
+                        <a href="tel:09229876543" class="bg-white/10 hover:bg-white/20 border border-white/20 text-white p-6 rounded-2xl text-center transition-all group flex flex-col items-center justify-center">
+                            <i class="fa-solid fa-fire-extinguisher text-4xl mb-3 text-rose-200 group-hover:scale-110 transition-transform"></i>
+                            <span class="text-xs uppercase tracking-wider font-semibold">BFP Fire Department</span>
+                            <span class="text-sm font-bold mt-2">0922-987-6543</span>
+                        </a>
+
+                        <a href="tel:0776001234" class="bg-white text-rose-700 hover:bg-rose-50 p-6 rounded-2xl text-center shadow-md transition-all group flex flex-col items-center justify-center">
+                            <i class="fa-solid fa-phone text-4xl mb-3 text-rose-600 group-hover:scale-110 transition-transform"></i>
+                            <span class="text-xs uppercase tracking-wider font-bold">Barangay Main Hall</span>
+                            <span class="text-base font-black mt-2">(077) 600-1234</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIEW 3: DUTY SCHEDULE FULL SCREEN -->
+            <div id="view-officials" class="view-section hidden space-y-6">
+                <div class="flex items-center justify-between pb-4 border-b border-slate-200">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-brand-600 bg-brand-50 px-2.5 py-1 rounded">24/7 Official Roster</span>
+                        <h2 class="text-2xl font-black text-slate-900 mt-1">Barangay Duty Schedule Directory</h2>
+                    </div>
+                    <button onclick="switchView('overview')" class="text-xs font-bold text-slate-600 bg-white border border-slate-200 px-3 py-2 rounded-lg hover:bg-slate-50">
+                        <i class="fa-solid fa-arrow-left mr-1"></i> Back to Overview
+                    </button>
+                </div>
+
+                <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-100">
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <h3 class="text-lg font-bold text-slate-900">Active Shift Guaranteed</h3>
+                                <span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-2.5 py-0.5 rounded-full flex items-center gap-1">
+                                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Minimum 2 Officials On-Duty
+                                </span>
+                            </div>
+                            <p class="text-slate-500 text-sm mt-1">Real-time duty monitor based on local time.</p>
+                        </div>
+                        <div id="shiftClock" class="bg-slate-100 px-4 py-2 rounded-xl text-right">
+                            <div class="text-xs text-slate-500 font-semibold uppercase">Current Shift Time</div>
+                            <div id="currentTimeStr" class="text-sm font-bold text-brand-700">Loading...</div>
+                        </div>
+                    </div>
+
+                    <div class="mt-6">
+                        <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Currently On Active Duty</h4>
+                        <div id="currentDutyCards" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+
+                    <div class="mt-8">
+                        <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Full 24-Hour Shift Matrix</h4>
+                        <div class="overflow-x-auto rounded-xl border border-slate-200">
+                            <table class="w-full text-left text-sm text-slate-600">
+                                <thead class="bg-slate-50 text-xs uppercase text-slate-500 font-bold border-b border-slate-200">
+                                    <tr>
+                                        <th class="py-3 px-4">Shift Block</th>
+                                        <th class="py-3 px-4">Time Coverage</th>
+                                        <th class="py-3 px-4">Assigned Officials</th>
+                                        <th class="py-3 px-4">Station</th>
+                                        <th class="py-3 px-4 text-center">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="fullScheduleBody" class="divide-y divide-slate-100">
+                                    <!-- Populated by JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIEW 4: HAZARD & COMPLAINTS FULL SCREEN -->
+            <div id="view-reporting" class="view-section hidden space-y-6">
+                <div class="flex items-center justify-between pb-4 border-b border-slate-200">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-amber-600 bg-amber-50 px-2.5 py-1 rounded">Public Safety Desk</span>
+                        <h2 class="text-2xl font-black text-slate-900 mt-1">Hazard Reporting & Complaint Center</h2>
+                    </div>
+                    <button onclick="switchView('overview')" class="text-xs font-bold text-slate-600 bg-white border border-slate-200 px-3 py-2 rounded-lg hover:bg-slate-50">
+                        <i class="fa-solid fa-arrow-left mr-1"></i> Back to Overview
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                    <div class="lg:col-span-7 bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+                        <h3 class="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
+                            <i class="fa-solid fa-triangle-exclamation text-amber-500"></i> Submit New Hazard Report
+                        </h3>
+                        <form id="reportForm" onsubmit="handleReportSubmit(event)" class="space-y-4">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Resident Full Name *</label>
+                                    <input type="text" id="reporterName" required placeholder="e.g. Maria Santos" class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-sm focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Contact Number *</label>
+                                    <input type="tel" id="reporterPhone" required placeholder="0917XXXXXXX" class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-sm focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Issue Category *</label>
+                                    <select id="reportCategory" required class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-sm focus:ring-2 focus:ring-brand-500 focus:outline-none bg-white">
+                                        <option value="">Select Category...</option>
+                                        <option value="Electrical & Power Lines">Electrical Hazard / Cable Wire Risk</option>
+                                        <option value="Road & Canal Drainage">Flooding / Broken Canal Drainage</option>
+                                        <option value="Public Noise Complaint">Public Noise / Nuisance</option>
+                                        <option value="Garbage & Sanitation">Uncollected Waste / Sanitation Risk</option>
+                                        <option value="Peace & Security">Security Concern / Suspicious Activity</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Specific Location / Purok *</label>
+                                    <input type="text" id="reportLocation" required placeholder="e.g. Purok 4 near Chapel" class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-sm focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Detailed Description *</label>
+                                <textarea id="reportDescription" rows="3" required placeholder="Provide concise details about the hazard..." class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-sm focus:ring-2 focus:ring-brand-500 focus:outline-none"></textarea>
+                            </div>
+                            <button type="submit" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold text-sm py-3 rounded-lg shadow transition-all flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-paper-plane"></i> Submit Incident Report
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="lg:col-span-5 bg-slate-900 text-white rounded-2xl shadow-sm p-6 flex flex-col justify-between">
+                        <div>
+                            <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
+                                <i class="fa-solid fa-route text-brand-400"></i> Track Incident Status
+                            </h3>
+                            <div class="flex gap-2 mb-4">
+                                <input type="text" id="trackInput" placeholder="e.g. BRGY-2026-1001" class="flex-1 bg-slate-800 border border-slate-700 text-white px-3.5 py-2 rounded-lg text-sm uppercase tracking-wider focus:outline-none">
+                                <button onclick="trackComplaint()" class="bg-brand-500 hover:bg-brand-600 px-4 py-2 rounded-lg text-sm font-bold transition-all">Track</button>
+                            </div>
+                            <div id="trackingResult" class="bg-slate-800/80 rounded-xl p-4 border border-slate-700 min-h-[200px]">
+                                <p class="text-slate-400 text-xs text-center py-10">Enter tracking ID above or click sample code.</p>
+                            </div>
+                        </div>
+                        <div class="mt-4 pt-4 border-t border-slate-800">
+                            <div class="text-xs text-slate-400 mb-2 font-medium">Try Test Tracking Codes:</div>
+                            <div class="flex gap-2 text-xs">
+                                <button onclick="quickTrack('BRGY-2026-1001')" class="bg-slate-800 hover:bg-slate-700 text-brand-300 font-mono px-2.5 py-1 rounded border border-slate-700">BRGY-2026-1001</button>
+                                <button onclick="quickTrack('BRGY-2026-1002')" class="bg-slate-800 hover:bg-slate-700 text-brand-300 font-mono px-2.5 py-1 rounded border border-slate-700">BRGY-2026-1002</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIEW 5: REQUEST FORMS FULL SCREEN -->
+            <div id="view-draft-forms" class="view-section hidden space-y-6">
+                <div class="flex items-center justify-between pb-4 border-b border-slate-200">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-brand-600 bg-brand-50 px-2.5 py-1 rounded">Document Desk</span>
+                        <h2 class="text-2xl font-black text-slate-900 mt-1">Request Official Barangay Forms</h2>
+                    </div>
+                    <button onclick="switchView('overview')" class="text-xs font-bold text-slate-600 bg-white border border-slate-200 px-3 py-2 rounded-lg hover:bg-slate-50">
+                        <i class="fa-solid fa-arrow-left mr-1"></i> Back to Overview
+                    </button>
+                </div>
+
+                <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+                    <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-6 flex items-start gap-3 text-amber-900">
+                        <i class="fa-solid fa-clock text-amber-600 text-xl mt-0.5"></i>
+                        <div class="text-xs leading-relaxed">
+                            <strong class="font-bold">Next-Day Pickup Guarantee:</strong> 
+                            Forms submitted today (<span id="todayDateNotice" class="font-bold"></span>) will be printed and ready for pickup tomorrow 
+                            (<span id="tomorrowDateNotice" class="font-bold text-amber-700 underline"></span>) at <strong>9:00 AM</strong> at Desk 2.
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                        <div class="lg:col-span-7">
+                            <form id="draftForm" onsubmit="handleFormDraftSubmit(event)" class="space-y-4">
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Select Document Type *</label>
+                                    <select id="formType" required onchange="updateFormFeeNotice()" class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-sm focus:ring-2 focus:ring-brand-500 bg-white">
+                                        <option value="Barangay Clearance">Barangay Clearance (General Purpose)</option>
+                                        <option value="Certificate of Indigency">Certificate of Indigency (Financial/Medical Assistance)</option>
+                                        <option value="Certificate of Residency">Certificate of Residency</option>
+                                        <option value="Business Permit Endorsement">Barangay Business Clearance</option>
+                                        <option value="First Time Job Seeker Certificate">First Time Job Seeker Certificate (RA 11261 - Free)</option>
+                                    </select>
+                                </div>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Applicant Full Name *</label>
+                                        <input type="text" id="applicantName" required placeholder="Juana Dela Cruz" class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-sm">
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Civil Status & Age *</label>
+                                        <input type="text" id="applicantStatus" required placeholder="Single, 24 yrs old" class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-sm">
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Purok / Address *</label>
+                                        <input type="text" id="applicantAddress" required placeholder="Purok 2, San Jose" class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-sm">
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Valid ID for Pickup *</label>
+                                        <input type="text" id="applicantID" required placeholder="e.g. PhilSys / Voter ID" class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-sm">
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Specific Purpose *</label>
+                                    <input type="text" id="applicantPurpose" required placeholder="e.g. Employment Application" class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-sm">
+                                </div>
+                                <button type="submit" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold text-sm py-3 rounded-lg shadow transition-all flex items-center justify-center gap-2">
+                                    <i class="fa-solid fa-file-export text-brand-400"></i> Generate Printable Claim Slip
+                                </button>
+                            </form>
+                        </div>
+
+                        <div class="lg:col-span-5 bg-slate-50 border border-slate-200 rounded-xl p-5 flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center justify-between border-b border-slate-200 pb-3 mb-4">
+                                    <h3 class="font-bold text-slate-800 text-sm flex items-center gap-2">
+                                        <i class="fa-solid fa-receipt text-brand-600"></i> Claim Voucher Preview
+                                    </h3>
+                                    <span id="feeBadge" class="text-xs font-bold bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded">₱50.00</span>
+                                </div>
+                                <div id="claimSlipContainer" class="space-y-3 text-xs text-slate-600">
+                                    <p class="text-slate-400 italic text-center py-8">Complete the draft form to generate your pickup ticket.</p>
+                                </div>
+                            </div>
+                            <div class="mt-4 pt-3 border-t border-slate-200 text-center">
+                                <button id="printBtn" onclick="printClaimSlip()" disabled class="text-xs font-bold text-slate-400 cursor-not-allowed flex items-center justify-center gap-2 w-full py-2 border border-slate-300 rounded-lg">
+                                    <i class="fa-solid fa-print"></i> Print / Save Claim Ticket
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIEW 6: EVENTS & TODAY FULL SCREEN -->
+            <div id="view-events" class="view-section hidden space-y-6">
+                <div class="flex items-center justify-between pb-4 border-b border-slate-200">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded">Community Activities</span>
+                        <h2 class="text-2xl font-black text-slate-900 mt-1">Events & Today's Schedule</h2>
+                    </div>
+                    <button onclick="switchView('overview')" class="text-xs font-bold text-slate-600 bg-white border border-slate-200 px-3 py-2 rounded-lg hover:bg-slate-50">
+                        <i class="fa-solid fa-arrow-left mr-1"></i> Back to Overview
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                    <div class="lg:col-span-5 bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-base font-bold text-slate-900">Today's Timeline</h3>
+                            <span id="todayShortDate" class="text-xs font-bold text-slate-500"></span>
+                        </div>
+                        <div id="todayScheduleList" class="space-y-4 relative pl-4 border-l-2 border-brand-200 mt-4">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-7 bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+                        <div class="flex items-center justify-between mb-6">
+                            <h3 class="text-base font-bold text-slate-900">Community Program Calendar (November 2026)</h3>
+                        </div>
+                        <div id="calendarEventsGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIEW 7: TRACKING DEDICATED SCREEN -->
+            <div id="view-tracking" class="view-section hidden space-y-6">
+                <div class="flex items-center justify-between pb-4 border-b border-slate-200">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-brand-600 bg-brand-50 px-2.5 py-1 rounded">Lookup Portal</span>
+                        <h2 class="text-2xl font-black text-slate-900 mt-1">Live Incident Tracking Lookup</h2>
+                    </div>
+                    <button onclick="switchView('overview')" class="text-xs font-bold text-slate-600 bg-white border border-slate-200 px-3 py-2 rounded-lg hover:bg-slate-50">
+                        <i class="fa-solid fa-arrow-left mr-1"></i> Back to Overview
+                    </button>
+                </div>
+
+                <div class="bg-slate-900 text-white rounded-2xl p-8 max-w-2xl mx-auto shadow-xl">
+                    <h3 class="text-lg font-bold mb-2">Enter Tracking ID</h3>
+                    <p class="text-slate-400 text-xs mb-6">Type or paste your reference code to view live dispatch status.</p>
+                    <div class="flex gap-3 mb-6">
+                        <input type="text" id="trackInputScreen" placeholder="e.g. BRGY-2026-1001" class="flex-1 bg-slate-800 border border-slate-700 text-white px-4 py-3 rounded-xl text-base uppercase tracking-wider focus:outline-none">
+                        <button onclick="trackComplaintScreen()" class="bg-brand-500 hover:bg-brand-600 px-6 py-3 rounded-xl font-bold transition-all">Lookup</button>
+                    </div>
+                    <div id="trackingScreenResult" class="bg-slate-800 rounded-xl p-5 border border-slate-700 min-h-[180px]">
+                        <p class="text-slate-400 text-xs text-center py-10">Enter reference code above.</p>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="bg-slate-900 text-slate-400 py-6 border-t border-slate-800 mt-20">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="text-xs">&copy; 2026 Barangay San Jose eBarangay Portal &bull; Single-File Viewport Navigation Mode.</p>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT DIRECTORY ROUTER & APP ENGINE -->
+    <script>
+        const DUTY_SHIFTS = [
+            {
+                id: 'morning', name: 'Morning Shift', timeRange: '08:00 AM - 04:00 PM', startHour: 8, endHour: 16,
+                officials: [
+                    { name: 'Kagawad Juan Dela Cruz', role: 'Duty Desk Lead', phone: '09178880011', station: 'Main Desk Hall A' },
+                    { name: 'Kagawad Elena Roxas', role: 'Peace & Order Duty', phone: '09187770022', station: 'Barangay Outpost 1' }
+                ]
+            },
+            {
+                id: 'afternoon', name: 'Evening Shift', timeRange: '04:00 PM - 12:00 AM', startHour: 16, endHour: 24,
+                officials: [
+                    { name: 'Kagawad Roberto Tan', role: 'Night Duty Supervisor', phone: '09205550033', station: 'Main Desk Hall A' },
+                    { name: 'Tanod Mario Gomez', role: 'Emergency Patrol Lead', phone: '09994440044', station: 'Mobile Patrol Unit' }
+                ]
+            },
+            {
+                id: 'graveyard', name: 'Night Graveyard Shift', timeRange: '12:00 AM - 08:00 AM', startHour: 0, endHour: 8,
+                officials: [
+                    { name: 'Kagawad Antonio Santos', role: 'Overnight Officer-in-Charge', phone: '09173330055', station: 'Night Counter' },
+                    { name: 'Tanod Carlos Reyes', role: 'Surveillance Officer', phone: '09182220066', station: 'CCTV Monitoring' }
+                ]
+            }
+        ];
+
+        const INITIAL_REPORTS = [
+            {
+                id: 'BRGY-2026-1001', reporter: 'Ramon Mercado', category: 'Electrical & Power Lines', location: 'Purok 3', description: 'Low-hanging electric wire.', status: 'Dispatched',
+                timeline: [{ step: 'Submitted', done: true, time: '08:15 AM' }, { step: 'Review', done: true, time: '08:30 AM' }, { step: 'Dispatched', done: true, time: '10:30 AM' }, { step: 'Resolved', done: false, time: 'Pending' }]
+            },
+            {
+                id: 'BRGY-2026-1002', reporter: 'Liza Ramos', category: 'Garbage & Sanitation', location: 'Purok 1', description: 'Storm debris uncollected.', status: 'Resolved',
+                timeline: [{ step: 'Submitted', done: true, time: 'Yesterday' }, { step: 'Review', done: true, time: 'Yesterday' }, { step: 'Dispatched', done: true, time: '09:00 AM' }, { step: 'Resolved', done: true, time: '01:15 PM' }]
+            }
+        ];
+
+        const TODAY_ANNOUNCEMENTS = [
+            { time: '09:00 AM - 12:00 PM', title: 'Free Anti-Rabies Vaccination for Pets', location: 'Barangay Covered Court', details: 'City Vet Office drive.', tag: 'Health' },
+            { time: '02:00 PM - 04:00 PM', title: 'Senior Citizen Cash Subsidy Distribution', location: 'Main Session Hall', details: 'Cluster B masterlist.', tag: 'Distribution' }
+        ];
+
+        const UPCOMING_EVENTS = [
+            { date: 'Nov 12, 2026', title: 'Barangay Youth Sports Fest', category: 'Youth', location: 'Covered Court' },
+            { date: 'Nov 15, 2026', title: 'General Barangay Assembly', category: 'Governance', location: 'Multipurpose Hall' }
+        ];
+
+        // DIRECTORY ROUTER ENGINE
+        function switchView(viewName) {
+            // Hide all views
+            document.querySelectorAll('.view-section').forEach(el => el.classList.add('hidden'));
+            
+            // Show target view
+            const target = document.getElementById(`view-${viewName}`);
+            if (target) {
+                target.classList.remove('hidden');
+                window.location.hash = viewName;
+                document.getElementById('breadcrumbPath').innerText = `/${viewName}`;
+            }
+
+            // Update nav styles
+            document.querySelectorAll('nav button').forEach(btn => {
+                btn.className = "px-3 py-2 text-xs font-semibold rounded-lg transition-colors text-slate-700 hover:text-brand-600 hover:bg-slate-100";
+            });
+            const activeBtn = document.getElementById(`nav-btn-${viewName}`);
+            if (activeBtn) {
+                activeBtn.className = "px-3 py-2 text-xs font-semibold rounded-lg transition-colors text-brand-700 bg-brand-50";
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // INITIALIZE ON LOAD & HASH CHANGE
+        document.addEventListener('DOMContentLoaded', () => {
+            initClockAndShift();
+            initLocalStorage();
+            initDates();
+            renderTodaySchedule();
+            renderCalendar();
+
+            // Check URL hash for direct routing
+            const hash = window.location.hash.replace('#', '');
+            if (hash && document.getElementById(`view-${hash}`)) {
+                switchView(hash);
+            } else {
+                switchView('overview');
+            }
+
+            window.addEventListener('hashchange', () => {
+                const h = window.location.hash.replace('#', '');
+                if (h && document.getElementById(`view-${h}`)) {
+                    switchView(h);
+                }
+            });
+        });
+
+        function initClockAndShift() {
+            const updateTime = () => {
+                const now = new Date();
+                const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+                const dateStr = now.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
+                const timeEl = document.getElementById('currentTimeStr');
+                if (timeEl) timeEl.innerText = `${dateStr} • ${timeStr}`;
+
+                renderDutyShift(now.getHours());
+            };
+            updateTime();
+            setInterval(updateTime, 1000);
+        }
+
+        function renderDutyShift(currentHour) {
+            let activeShift = DUTY_SHIFTS[0];
+            if (currentHour >= 16 && currentHour < 24) activeShift = DUTY_SHIFTS[1];
+            if (currentHour >= 0 && currentHour < 8) activeShift = DUTY_SHIFTS[2];
+
+            const cardsContainer = document.getElementById('currentDutyCards');
+            if (cardsContainer) {
+                cardsContainer.innerHTML = activeShift.officials.map(o => `
+                    <div class="bg-slate-50 border border-emerald-200 rounded-xl p-4 flex items-center justify-between">
+                        <div>
+                            <span class="text-[10px] font-extrabold uppercase bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded">Active Duty</span>
+                            <h4 class="font-bold text-slate-900 text-sm mt-1">${o.name}</h4>
+                            <p class="text-xs text-slate-500">${o.role} • ${o.station}</p>
+                        </div>
+                        <a href="tel:${o.phone}" class="bg-emerald-600 text-white w-9 h-9 rounded-full flex items-center justify-center text-sm shadow">
+                            <i class="fa-solid fa-phone"></i>
+                        </a>
+                    </div>
+                `).join('');
+            }
+
+            const body = document.getElementById('fullScheduleBody');
+            if (body) {
+                body.innerHTML = DUTY_SHIFTS.map(s => {
+                    const isActive = s.id === activeShift.id;
+                    return `
+                        <tr class="${isActive ? 'bg-emerald-50/60 font-medium' : 'hover:bg-slate-50'}">
+                            <td class="py-3 px-4 font-bold ${isActive ? 'text-emerald-900' : 'text-slate-900'}">${s.name}</td>
+                            <td class="py-3 px-4">${s.timeRange}</td>
+                            <td class="py-3 px-4">${s.officials.map(o => `<div>${o.name} (${o.role})</div>`).join('')}</td>
+                            <td class="py-3 px-4 text-xs">${s.officials[0].station}</td>
+                            <td class="py-3 px-4 text-center">${isActive ? '<span class="bg-emerald-500 text-white text-[10px] font-extrabold px-2 py-1 rounded-full uppercase">Active Now</span>' : '<span class="bg-slate-200 text-slate-600 text-[10px] font-bold px-2 py-1 rounded-full uppercase">Scheduled</span>'}</td>
+                        </tr>
+                    `;
+                }).join('');
+            }
+        }
+
+        function initLocalStorage() {
+            if (!localStorage.getItem('brgy_reports')) {
+                localStorage.setItem('brgy_reports', JSON.stringify(INITIAL_REPORTS));
+            }
+        }
+
+        function handleReportSubmit(e) {
+            e.preventDefault();
+            const trackingID = `BRGY-2026-${Math.floor(1000 + Math.random() * 9000)}`;
+            const newReport = {
+                id: trackingID,
+                reporter: document.getElementById('reporterName').value,
+                category: document.getElementById('reportCategory').value,
+                location: document.getElementById('reportLocation').value,
+                description: document.getElementById('reportDescription').value,
+                status: 'Submitted',
+                timeline: [{ step: 'Submitted', done: true, time: 'Just Now' }, { step: 'Review', done: false, time: 'Pending' }]
+            };
+            const reports = JSON.parse(localStorage.getItem('brgy_reports'));
+            reports.unshift(newReport);
+            localStorage.setItem('brgy_reports', JSON.stringify(reports));
+
+            alert(`✅ Submitted! Tracking ID: ${trackingID}`);
+            document.getElementById('reportForm').reset();
+            quickTrack(trackingID);
+        }
+
+        function quickTrack(id) {
+            const reports = JSON.parse(localStorage.getItem('brgy_reports') || '[]');
+            const found = reports.find(r => r.id === id);
+            const container = document.getElementById('trackingResult');
+            if (!container) return;
+
+            if (!found) {
+                container.innerHTML = `<p class="text-rose-400 text-xs text-center py-6">ID Not Found: ${id}</p>`;
+                return;
+            }
+            container.innerHTML = `
+                <div class="space-y-2 text-xs">
+                    <div class="flex justify-between font-bold text-white"><span class="text-brand-400">${found.id}</span><span>${found.status}</span></div>
+                    <p class="text-slate-300"><b>${found.category}</b> at ${found.location}</p>
+                    <p class="text-slate-400 italic">"${found.description}"</p>
+                </div>
+            `;
+        }
+
+        function trackComplaint() {
+            const val = document.getElementById('trackInput').value.trim().toUpperCase();
+            if (val) quickTrack(val);
+        }
+
+        function trackComplaintScreen() {
+            const val = document.getElementById('trackInputScreen').value.trim().toUpperCase();
+            const reports = JSON.parse(localStorage.getItem('brgy_reports') || '[]');
+            const found = reports.find(r => r.id === val);
+            const res = document.getElementById('trackingScreenResult');
+            if (!found) {
+                res.innerHTML = `<p class="text-rose-400 text-xs text-center py-6">Tracking ID ${val} not found.</p>`;
+                return;
+            }
+            res.innerHTML = `
+                <div class="space-y-2 text-sm">
+                    <div class="flex justify-between font-bold text-white"><span class="text-brand-400">${found.id}</span><span class="bg-emerald-800 px-2 py-0.5 rounded text-xs">${found.status}</span></div>
+                    <p class="text-slate-200"><b>Category:</b> ${found.category}</p>
+                    <p class="text-slate-200"><b>Location:</b> ${found.location}</p>
+                    <p class="text-slate-300 italic">" ${found.description} "</p>
+                </div>
+            `;
+        }
+
+        function initDates() {
+            const today = new Date();
+            const tomorrow = new Date(today);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            const opt = { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' };
+            const tEl = document.getElementById('todayDateNotice');
+            const tmEl = document.getElementById('tomorrowDateNotice');
+            const tsEl = document.getElementById('todayShortDate');
+            if (tEl) tEl.innerText = today.toLocaleDateString('en-US', opt);
+            if (tmEl) tmEl.innerText = tomorrow.toLocaleDateString('en-US', opt);
+            if (tsEl) tsEl.innerText = today.toLocaleDateString('en-US', opt);
+        }
+
+        function updateFormFeeNotice() {
+            const type = document.getElementById('formType').value;
+            const badge = document.getElementById('feeBadge');
+            if (!badge) return;
+            if (type.includes('Job Seeker') || type.includes('Indigency')) {
+                badge.innerText = 'FREE (RA 11261)';
+            } else if (type.includes('Business')) {
+                badge.innerText = '₱150.00';
+            } else {
+                badge.innerText = '₱50.00';
+            }
+        }
+
+        function handleFormDraftSubmit(e) {
+            e.preventDefault();
+            const code = `CLAIM-${Math.floor(100000 + Math.random() * 900000)}`;
+            const container = document.getElementById('claimSlipContainer');
+            container.innerHTML = `
+                <div class="bg-white border-2 border-dashed border-brand-300 rounded-xl p-4 text-xs space-y-2 text-slate-800">
+                    <div class="text-center border-b pb-2"><strong class="font-mono text-brand-700 text-sm">${code}</strong></div>
+                    <div><b>Type:</b> ${document.getElementById('formType').value}</div>
+                    <div><b>Applicant:</b> ${document.getElementById('applicantName').value}</div>
+                    <div class="bg-amber-50 p-2 rounded text-center text-amber-900 font-bold mt-2">Pickup Tomorrow @ 9:00 AM (Desk 2)</div>
+                </div>
+            `;
+            document.getElementById('printBtn').disabled = false;
+            document.getElementById('printBtn').className = "text-xs font-bold bg-brand-600 text-white flex items-center justify-center gap-2 w-full py-2.5 rounded-lg shadow";
+        }
+
+        function printClaimSlip() { window.print(); }
+
+        function renderTodaySchedule() {
+            const list = document.getElementById('todayScheduleList');
+            if (!list) return;
+            list.innerHTML = TODAY_ANNOUNCEMENTS.map(item => `
+                <div class="relative">
+                    <div class="absolute -left-[21px] top-1.5 w-3 h-3 rounded-full bg-brand-600 border-2 border-white"></div>
+                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-100">
+                        <span class="text-xs font-bold text-brand-700">${item.time}</span>
+                        <h4 class="font-bold text-slate-900 text-sm mt-0.5">${item.title}</h4>
+                        <p class="text-xs text-slate-600">${item.details} (${item.location})</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderCalendar() {
+            const grid = document.getElementById('calendarEventsGrid');
+            if (!grid) return;
+            grid.innerHTML = UPCOMING_EVENTS.map(ev => `
+                <div class="border border-slate-200 rounded-xl p-4 bg-white">
+                    <span class="text-xs font-bold text-brand-600 bg-brand-50 px-2 py-0.5 rounded">${ev.date}</span>
+                    <h4 class="font-bold text-slate-900 text-sm mt-2">${ev.title}</h4>
+                    <p class="text-xs text-slate-500 mt-1"><i class="fa-solid fa-map-pin mr-1"></i> ${ev.location}</p>
+                </div>
+            `).join('');
+        }
+    </script>
+</body>
+</html>

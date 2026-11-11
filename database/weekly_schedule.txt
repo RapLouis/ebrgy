@@ -1,0 +1,30 @@
+# BARANGAY SAN JOSE - FULL WEEKLY OFFICIALS DUTY SCHEDULE DATABASE (MONDAY - SUNDAY)
+# Format: Day | Date | Shift Block | Time Coverage | Assigned Officials | Station
+
+Monday | Nov 09, 2026 | Morning Shift | 08:00 AM - 04:00 PM | Kagawad Juan Dela Cruz (Duty Desk Lead), Kagawad Elena Roxas (Peace & Order) | Main Desk Hall A
+Monday | Nov 09, 2026 | Evening Shift | 04:00 PM - 12:00 AM | Kagawad Roberto Tan (Night Supervisor), Tanod Mario Gomez (Patrol Lead) | Main Desk Hall A
+Monday | Nov 09, 2026 | Graveyard Shift | 12:00 AM - 08:00 AM | Kagawad Antonio Santos (Overnight Officer), Tanod Carlos Reyes (Surveillance) | Night Counter
+
+Tuesday | Nov 10, 2026 | Morning Shift | 08:00 AM - 04:00 PM | Kagawad Maria Santos (Desk Lead), Kagawad Pedro Penduko (Welfare Officer) | Main Desk Hall A
+Tuesday | Nov 10, 2026 | Evening Shift | 04:00 PM - 12:00 AM | Kagawad Roberto Tan (Night Supervisor), Tanod Mario Gomez (Patrol Lead) | Main Desk Hall A
+Tuesday | Nov 10, 2026 | Graveyard Shift | 12:00 AM - 08:00 AM | Kagawad Antonio Santos (Overnight Officer), Tanod Carlos Reyes (Surveillance) | Night Counter
+
+Wednesday | Nov 11, 2026 | Morning Shift | 08:00 AM - 04:00 PM | Kagawad Juan Dela Cruz (Duty Desk Lead), Kagawad Antonio Santos (Assistance Lead) | Main Desk Hall A
+Wednesday | Nov 11, 2026 | Evening Shift | 04:00 PM - 12:00 AM | Kagawad Elena Roxas (Peace & Order), Tanod Carlos Reyes (Patrol Lead) | Main Desk Hall A
+Wednesday | Nov 11, 2026 | Graveyard Shift | 12:00 AM - 08:00 AM | Kagawad Maria Santos (Overnight Officer), Tanod Mario Gomez (Surveillance) | Night Counter
+
+Thursday | Nov 12, 2026 | Morning Shift | 08:00 AM - 04:00 PM | Kagawad Roberto Tan (Duty Desk Lead), Kagawad Maria Santos (Welfare Officer) | Main Desk Hall A
+Thursday | Nov 12, 2026 | Evening Shift | 04:00 PM - 12:00 AM | Kagawad Pedro Penduko (Night Supervisor), Tanod Mario Gomez (Patrol Lead) | Main Desk Hall A
+Thursday | Nov 12, 2026 | Graveyard Shift | 12:00 AM - 08:00 AM | Kagawad Juan Dela Cruz (Overnight Officer), Tanod Carlos Reyes (Surveillance) | Night Counter
+
+Friday | Nov 13, 2026 | Morning Shift | 08:00 AM - 04:00 PM | Kagawad Antonio Santos (Duty Desk Lead), Kagawad Elena Roxas (Peace & Order) | Main Desk Hall A
+Friday | Nov 13, 2026 | Evening Shift | 04:00 PM - 12:00 AM | Kagawad Juan Dela Cruz (Night Supervisor), Tanod Carlos Reyes (Patrol Lead) | Main Desk Hall A
+Friday | Nov 13, 2026 | Graveyard Shift | 12:00 AM - 08:00 AM | Kagawad Maria Santos (Overnight Officer), Tanod Mario Gomez (Surveillance) | Night Counter
+
+Saturday | Nov 14, 2026 | Weekend Day Duty | 08:00 AM - 04:00 PM | Kagawad Roberto Tan (Desk Lead), Kagawad Maria Santos (Records Lead) | Desk 2 Lobby
+Saturday | Nov 14, 2026 | Weekend Night Duty | 04:00 PM - 12:00 AM | Kagawad Pedro Penduko (Night Duty), Tanod Mario Gomez (Patrol Lead) | Desk 2 Lobby
+Saturday | Nov 14, 2026 | Weekend Graveyard | 12:00 AM - 08:00 AM | Kagawad Antonio Santos (Overnight), Tanod Carlos Reyes (Surveillance) | Night Counter
+
+Sunday | Nov 15, 2026 | Weekend Day Duty | 08:00 AM - 04:00 PM | Kagawad Antonio Santos (Desk Lead), Tanod Mario Gomez (Patrol Lead) | Desk 2 Lobby
+Sunday | Nov 15, 2026 | Weekend Night Duty | 04:00 PM - 12:00 AM | Kagawad Elena Roxas (Night Duty), Tanod Carlos Reyes (Patrol Lead) | Desk 2 Lobby
+Sunday | Nov 15, 2026 | Weekend Graveyard | 12:00 AM - 08:00 AM | Kagawad Roberto Tan (Overnight), Tanod Mario Gomez (Surveillance) | Night Counter

@@ -1,0 +1,26 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-slate-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col justify-between;
+  }
+}
+
+/* Custom Print Styling for Claim Vouchers */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #claimSlipContainer, #claimSlipContainer * {
+    visibility: visible;
+  }
+  #claimSlipContainer {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    border: none !important;
+  }
+}

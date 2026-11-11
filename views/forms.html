@@ -1,0 +1,81 @@
+<div class="space-y-6">
+    <div class="flex items-center justify-between pb-4">
+        <div>
+            <h2 class="text-2xl font-black text-slate-900 mt-1">Request Official Barangay Forms</h2>
+        </div>
+    </div>
+
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+        <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-6 flex items-start gap-3 text-amber-900">
+            <i class="fa-solid fa-clock text-amber-600 text-xl mt-0.5"></i>
+            <div class="text-xs leading-relaxed">
+                <strong class="font-bold">Next-Day Pickup Guarantee:</strong> 
+                Forms submitted today (<span id="todayDateNotice" class="font-bold"></span>) will be printed and ready for pickup tomorrow 
+                (<span id="tomorrowDateNotice" class="font-bold text-amber-700 underline"></span>) at <strong>9:00 AM</strong> at Desk 2.
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            <div class="lg:col-span-7">
+                <form id="draftForm" onsubmit="handleFormDraftSubmit(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Select Document Type *</label>
+                        <select id="formType" required onchange="updateFormFeeNotice()" class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-sm focus:ring-2 focus:ring-brand-500 bg-white">
+                            <option value="Barangay Clearance">Barangay Clearance (General Purpose)</option>
+                            <option value="Certificate of Indigency">Certificate of Indigency (Financial/Medical Assistance)</option>
+                            <option value="Certificate of Residency">Certificate of Residency</option>
+                            <option value="Business Permit Endorsement">Barangay Business Clearance</option>
+                            <option value="First Time Job Seeker Certificate">First Time Job Seeker Certificate (RA 11261 - Free)</option>
+                        </select>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Applicant Full Name *</label>
+                            <input type="text" id="applicantName" required placeholder="Juana Dela Cruz" class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Civil Status & Age *</label>
+                            <input type="text" id="applicantStatus" required placeholder="Single, 24 yrs old" class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-sm">
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Purok / Address *</label>
+                            <input type="text" id="applicantAddress" required placeholder="Purok 2, San Jose" class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Valid ID for Pickup *</label>
+                            <input type="text" id="applicantID" required placeholder="e.g. PhilSys / Voter ID" class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-sm">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Specific Purpose *</label>
+                        <input type="text" id="applicantPurpose" required placeholder="e.g. Employment Application" class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-sm">
+                    </div>
+                    <button type="submit" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold text-sm py-3 rounded-lg shadow transition-all flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-file-export text-brand-400"></i> Generate Printable Claim Slip
+                    </button>
+                </form>
+            </div>
+
+            <div class="lg:col-span-5 bg-slate-50 border border-slate-200 rounded-xl p-5 flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between border-b border-slate-200 pb-3 mb-4">
+                        <h3 class="font-bold text-slate-800 text-sm flex items-center gap-2">
+                            <i class="fa-solid fa-receipt text-brand-600"></i> Claim Voucher Preview
+                        </h3>
+                        <span id="feeBadge" class="text-xs font-bold bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded">₱50.00</span>
+                    </div>
+                    <div id="claimSlipContainer" class="space-y-3 text-xs text-slate-600">
+                        <p class="text-slate-400 italic text-center py-8">Complete the draft form to generate your pickup ticket.</p>
+                    </div>
+                </div>
+                <div class="mt-4 pt-3 border-t border-slate-200 text-center">
+                    <button id="printBtn" onclick="printClaimSlip()" disabled class="text-xs font-bold text-slate-400 cursor-not-allowed flex items-center justify-center gap-2 w-full py-2 border border-slate-300 rounded-lg">
+                        <i class="fa-solid fa-print"></i> Print / Save Claim Ticket
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

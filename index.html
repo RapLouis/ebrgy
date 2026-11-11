@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>eBarangay Resident Portal - Continuous Single Scroll</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        brand: {
+                            50: '#eff6ff', 100: '#dbeafe', 500: '#3b82f6',
+                            600: '#2563eb', 700: '#1d4ed8', 800: '#1e40af', 900: '#1e3a8a'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- PRINT STYLESHEET: Isolates only the claim ticket card when printing/saving -->
+    <style>
+        @media print {
+            body * {
+                visibility: hidden !important;
+            }
+            #claimSlipContainer, #claimSlipContainer * {
+                visibility: visible !important;
+            }
+            #claimSlipContainer {
+                position: absolute !important;
+                left: 0 !important;
+                top: 0 !important;
+                width: 100% !important;
+                margin: 0 !important;
+                padding: 20px !important;
+                border: none !important;
+                box-shadow: none !important;
+                background: white !important;
+            }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col justify-between">
+
+    <div>
+        <!-- STICKY TOP NAVIGATION BAR -->
+        <header class="sticky top-0 z-50 bg-white/95 backdrop-blur shadow-sm border-b border-slate-200">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+                <a href="#overview" class="flex items-center space-x-3 cursor-pointer">
+                    <div class="bg-brand-600 text-white w-10 h-10 rounded-xl flex items-center justify-center font-bold text-xl shadow-md">
+                        <i class="fa-solid fa-building-shield"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-lg font-bold text-slate-900 leading-tight">eBarangay Portal</h1>
+                        <p class="text-xs text-slate-500 font-medium">Barangay San Jose • Resident Services</p>
+                    </div>
+                </a>
+
+                <!-- Navigation Scroll Links -->
+                <nav class="hidden md:flex items-center space-x-1 lg:space-x-2">
+                    <a href="#overview" class="px-3 py-2 text-xs font-semibold rounded-lg transition-colors text-slate-700 hover:text-brand-600 hover:bg-slate-100">
+                        <i class="fa-solid fa-house mr-1"></i> Overview
+                    </a>
+                    <a href="#emergency" class="px-3 py-2 text-xs font-semibold rounded-lg transition-colors text-rose-600 bg-rose-50 hover:bg-rose-100">
+                        <i class="fa-solid fa-phone-volume mr-1"></i> Emergency
+                    </a>
+                    <a href="#officials" class="px-3 py-2 text-xs font-semibold rounded-lg transition-colors text-slate-700 hover:text-brand-600 hover:bg-slate-100">
+                        <i class="fa-solid fa-user-clock mr-1"></i> Duty Schedule
+                    </a>
+                    <a href="#reporting" class="px-3 py-2 text-xs font-semibold rounded-lg transition-colors text-slate-700 hover:text-brand-600 hover:bg-slate-100">
+                        <i class="fa-solid fa-circle-exclamation mr-1"></i> Hazard & Complaints
+                    </a>
+                    <a href="#forms" class="px-3 py-2 text-xs font-semibold rounded-lg transition-colors text-slate-700 hover:text-brand-600 hover:bg-slate-100">
+                        <i class="fa-solid fa-file-signature mr-1"></i> Request Forms
+                    </a>
+                    <a href="#events" class="px-3 py-2 text-xs font-semibold rounded-lg transition-colors text-slate-700 hover:text-brand-600 hover:bg-slate-100">
+                        <i class="fa-solid fa-calendar-days mr-1"></i> Events & Today
+                    </a>
+                </nav>
+
+                <a href="#reporting" class="bg-brand-600 hover:bg-brand-700 text-white text-xs font-bold px-4 py-2 rounded-lg shadow-sm transition-all flex items-center gap-2">
+                    <i class="fa-solid fa-magnifying-glass"></i> Track Report
+                </a>
+            </div>
+        </header>
+
+        <!-- SUB-HEADER DIRECTORY BREADCRUMB -->
+        <div class="bg-white border-b border-slate-200 px-4 sm:px-6 lg:px-8 py-2.5">
+            <div class="max-w-7xl mx-auto flex items-center justify-between text-xs text-slate-500">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-folder-tree text-brand-600"></i>
+                    <span>Architecture:</span>
+                    <span class="font-mono font-bold text-slate-900 bg-slate-100 px-2 py-0.5 rounded">Separated Files &bull; Continuous Single-Page Scroll</span>
+                </div>
+                <div class="hidden sm:block text-slate-400">
+                    Live Roster & Ticket Print Isolation Active
+                </div>
+            </div>
+        </div>
+
+        <!-- MAIN CONTAINER STACKING ALL SEPARATE FILES -->
+        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-16">
+
+            <!-- 1. OVERVIEW VIEW -->
+            <section id="overview" class="pt-4">
+                <div id="slot-overview"></div>
+            </section>
+
+            <!-- 2. EMERGENCY VIEW -->
+            <section id="emergency" class="pt-10 border-t border-slate-200">
+                <div id="slot-emergency"></div>
+            </section>
+
+            <!-- 3. OFFICIALS VIEW -->
+            <section id="officials" class="pt-10 border-t border-slate-200">
+                <div id="slot-officials"></div>
+            </section>
+
+            <!-- 4. REPORTING VIEW -->
+            <section id="reporting" class="pt-10 border-t border-slate-200">
+                <div id="slot-reporting"></div>
+            </section>
+
+            <!-- 5. FORMS VIEW -->
+            <section id="forms" class="pt-10 border-t border-slate-200">
+                <div id="slot-forms"></div>
+            </section>
+
+            <!-- 6. EVENTS VIEW -->
+            <section id="events" class="pt-10 border-t border-slate-200">
+                <div id="slot-events"></div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="bg-slate-900 text-slate-400 py-6 border-t border-slate-800 mt-20">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="text-xs">&copy; 2026 Barangay San Jose eBarangay Portal &bull; Modular File Architecture.</p>
+        </div>
+    </footer>
+
+    <!-- SCRIPT TO LOAD SEPARATE FILES INTO SLOTS -->
+    <script>
+        async function loadViewIntoSlot(viewName, slotId) {
+            try {
+                const response = await fetch(`views/${viewName}.html`);
+                if (!response.ok) throw new Error(`Could not load views/${viewName}.html`);
+                const html = await response.text();
+                document.getElementById(slotId).innerHTML = html;
+                
+                if (viewName === 'officials' && typeof renderWeeklyMatrix === 'function') {
+                    renderWeeklyMatrix();
+                }
+                if (viewName === 'events') {
+                    if (typeof renderTodaySchedule === 'function') renderTodaySchedule();
+                    if (typeof renderCalendar === 'function') renderCalendar();
+                }
+            } catch (err) {
+                console.warn(`Local fetch restricted for ${viewName}.html. Make sure you are using Live Server.`, err);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            await loadViewIntoSlot('overview', 'slot-overview');
+            await loadViewIntoSlot('emergency', 'slot-emergency');
+            await loadViewIntoSlot('officials', 'slot-officials');
+            await loadViewIntoSlot('reporting', 'slot-reporting');
+            await loadViewIntoSlot('forms', 'slot-forms');
+            await loadViewIntoSlot('events', 'slot-events');
+
+            setTimeout(() => {
+                if (typeof initClockAndShift === 'function') initClockAndShift();
+                if (typeof initDates === 'function') initDates();
+                if (typeof renderTodaySchedule === 'function') renderTodaySchedule();
+                if (typeof renderCalendar === 'function') renderCalendar();
+                if (typeof initLocalStorage === 'function') initLocalStorage();
+                if (typeof renderWeeklyMatrix === 'function') renderWeeklyMatrix();
+            }, 200);
+        });
+    </script>
+    <script src="assets/js/app.js"></script>
+</body>
+</html>
