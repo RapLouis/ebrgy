@@ -1,154 +1,198 @@
 // ==========================================
-// 1. DATA SEEDS & WEEKLY ROSTER MATRIX
+// 1. OFFICIALS POOL & RANDOMIZED WEEKLY ROSTER
 // ==========================================
-const WEEKLY_ROSTER_DATA = [
-    { day: 'Monday', date: 'Nov 09, 2026', shift: 'Morning Shift (08:00 AM - 04:00 PM)', officials: 'Kagawad Juan Dela Cruz (Duty Desk Lead), Kagawad Elena Roxas (Peace & Order)', station: 'Main Desk Hall A' },
-    { day: 'Monday', date: 'Nov 09, 2026', shift: 'Evening Shift (04:00 PM - 12:00 AM)', officials: 'Kagawad Roberto Tan (Night Supervisor), Tanod Mario Gomez (Patrol Lead)', station: 'Main Desk Hall A' },
-    { day: 'Monday', date: 'Nov 09, 2026', shift: 'Graveyard Shift (12:00 AM - 08:00 AM)', officials: 'Kagawad Antonio Santos (Overnight Officer), Tanod Carlos Reyes (Surveillance)', station: 'Night Counter' },
-    { day: 'Tuesday', date: 'Nov 10, 2026', shift: 'Morning Shift (08:00 AM - 04:00 PM)', officials: 'Kagawad Maria Santos (Desk Lead), Kagawad Pedro Penduko (Welfare Officer)', station: 'Main Desk Hall A' },
-    { day: 'Tuesday', date: 'Nov 10, 2026', shift: 'Evening Shift (04:00 PM - 12:00 AM)', officials: 'Kagawad Roberto Tan (Night Supervisor), Tanod Mario Gomez (Patrol Lead)', station: 'Main Desk Hall A' },
-    { day: 'Tuesday', date: 'Nov 10, 2026', shift: 'Graveyard Shift (12:00 AM - 08:00 AM)', officials: 'Kagawad Antonio Santos (Overnight Officer), Tanod Carlos Reyes (Surveillance)', station: 'Night Counter' },
-    { day: 'Wednesday', date: 'Nov 11, 2026', shift: 'Morning Shift (08:00 AM - 04:00 PM)', officials: 'Kagawad Juan Dela Cruz (Duty Desk Lead), Kagawad Antonio Santos (Assistance Lead)', station: 'Main Desk Hall A' },
-    { day: 'Wednesday', date: 'Nov 11, 2026', shift: 'Evening Shift (04:00 PM - 12:00 AM)', officials: 'Kagawad Elena Roxas (Peace & Order), Tanod Carlos Reyes (Patrol Lead)', station: 'Main Desk Hall A' },
-    { day: 'Wednesday', date: 'Nov 11, 2026', shift: 'Graveyard Shift (12:00 AM - 08:00 AM)', officials: 'Kagawad Maria Santos (Overnight Officer), Tanod Mario Gomez (Surveillance)', station: 'Night Counter' },
-    { day: 'Thursday', date: 'Nov 12, 2026', shift: 'Morning Shift (08:00 AM - 04:00 PM)', officials: 'Kagawad Roberto Tan (Duty Desk Lead), Kagawad Maria Santos (Welfare Officer)', station: 'Main Desk Hall A' },
-    { day: 'Thursday', date: 'Nov 12, 2026', shift: 'Evening Shift (04:00 PM - 12:00 AM)', officials: 'Kagawad Pedro Penduko (Night Supervisor), Tanod Mario Gomez (Patrol Lead)', station: 'Main Desk Hall A' },
-    { day: 'Thursday', date: 'Nov 12, 2026', shift: 'Graveyard Shift (12:00 AM - 08:00 AM)', officials: 'Kagawad Juan Dela Cruz (Overnight Officer), Tanod Carlos Reyes (Surveillance)', station: 'Night Counter' },
-    { day: 'Friday', date: 'Nov 13, 2026', shift: 'Morning Shift (08:00 AM - 04:00 PM)', officials: 'Kagawad Antonio Santos (Duty Desk Lead), Kagawad Elena Roxas (Peace & Order)', station: 'Main Desk Hall A' },
-    { day: 'Friday', date: 'Nov 13, 2026', shift: 'Evening Shift (04:00 PM - 12:00 AM)', officials: 'Kagawad Juan Dela Cruz (Night Supervisor), Tanod Carlos Reyes (Patrol Lead)', station: 'Main Desk Hall A' },
-    { day: 'Friday', date: 'Nov 13, 2026', shift: 'Graveyard Shift (12:00 AM - 08:00 AM)', officials: 'Kagawad Maria Santos (Overnight Officer), Tanod Mario Gomez (Surveillance)', station: 'Night Counter' },
-    { day: 'Saturday', date: 'Nov 14, 2026', shift: 'Weekend Day Duty (08:00 AM - 04:00 PM)', officials: 'Kagawad Roberto Tan (Desk Lead), Kagawad Maria Santos (Records Lead)', station: 'Desk 2 Lobby' },
-    { day: 'Saturday', date: 'Nov 14, 2026', shift: 'Weekend Night Duty (04:00 PM - 12:00 AM)', officials: 'Kagawad Pedro Penduko (Night Duty), Tanod Mario Gomez (Patrol Lead)', station: 'Desk 2 Lobby' },
-    { day: 'Saturday', date: 'Nov 14, 2026', shift: 'Weekend Graveyard (12:00 AM - 08:00 AM)', officials: 'Kagawad Antonio Santos (Overnight), Tanod Carlos Reyes (Surveillance)', station: 'Night Counter' },
-    { day: 'Sunday', date: 'Nov 15, 2026', shift: 'Weekend Day Duty (08:00 AM - 04:00 PM)', officials: 'Kagawad Antonio Santos (Desk Lead), Tanod Mario Gomez (Patrol Lead)', station: 'Desk 2 Lobby' },
-    { day: 'Sunday', date: 'Nov 15, 2026', shift: 'Weekend Night Duty (04:00 PM - 12:00 AM)', officials: 'Kagawad Elena Roxas (Night Duty), Tanod Carlos Reyes (Patrol Lead)', station: 'Desk 2 Lobby' },
-    { day: 'Sunday', date: 'Nov 15, 2026', shift: 'Weekend Graveyard (12:00 AM - 08:00 AM)', officials: 'Kagawad Roberto Tan (Overnight), Tanod Mario Gomez (Surveillance)', station: 'Night Counter' }
+const OFFICIALS_POOL = [
+    { name: 'Kagawad Juan Dela Cruz', role: 'Duty Desk Lead' },
+    { name: 'Kagawad Elena Roxas', role: 'Peace & Order Lead' },
+    { name: 'Kagawad Roberto Tan', role: 'Night Supervisor' },
+    { name: 'Kagawad Antonio Santos', role: 'Overnight Officer' },
+    { name: 'Kagawad Maria Santos', role: 'Welfare Lead' },
+    { name: 'Kagawad Pedro Penduko', role: 'Public Safety Lead' },
+    { name: 'Tanod Mario Gomez', role: 'Patrol Lead' },
+    { name: 'Tanod Carlos Reyes', role: 'Surveillance Lead' }
 ];
 
-const DEFAULT_REPORTS = [
-    { id: 'BRGY-2026-1001', reporter: 'Ramon Mercado', category: 'Electrical & Power Lines', location: 'Purok 3', description: 'Low-hanging electric wire near basketball court.', status: 'Dispatched', date: 'Nov 10, 2026' },
-    { id: 'BRGY-2026-1002', reporter: 'Liza Ramos', category: 'Garbage & Sanitation', location: 'Purok 1', description: 'Storm debris uncollected near drainage channel.', status: 'Resolved', date: 'Nov 09, 2026' }
+const DAYS_LIST = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+const SHIFTS_LIST = [
+    { name: 'Morning Shift', time: '08:00 AM - 04:00 PM', station: 'Main Desk Hall A' },
+    { name: 'Evening Shift', time: '04:00 PM - 12:00 AM', station: 'Main Desk Hall A' }
 ];
 
-const DEFAULT_ANNOUNCEMENTS = [
-    { id: 'ANN-1', time: '08:00 AM - 11:00 AM', title: 'Barangay Clean-Up & Drainage Clearing Drive', location: 'Purok 1 to 4', details: 'Residents and Tanods mobilization.' },
-    { id: 'ANN-2', time: '01:00 PM - 03:30 PM', title: 'Free Anti-Rabies Vaccination for Pets', location: 'Barangay Covered Court', details: 'City Vet Office mobile drive.' },
-    { id: 'ANN-3', time: '04:00 PM - 06:00 PM', title: 'Lupong Tagapapayapa Mediation Hearing', location: 'Session Hall A', details: 'Scheduled land boundary disputes.' }
-];
+function generateRandomizedWeeklyRoster() {
+    const roster = [];
+    const baseDate = new Date();
+    const currentDay = baseDate.getDay();
+    const dayOffset = currentDay === 0 ? -6 : 1 - currentDay; // Shift to Monday
 
-const DEFAULT_EVENTS = [
-    { id: 'EVT-1', date: 'Nov 12, 2026', title: 'Barangay Youth Basketball & Volleyball League', location: 'Main Covered Court' },
-    { id: 'EVT-2', date: 'Nov 15, 2026', title: 'Quarterly General Barangay Assembly', location: 'Multipurpose Hall & Online' },
-    { id: 'EVT-3', date: 'Nov 18, 2026', title: 'Free Maternal & Pediatric Health Checkup', location: 'Barangay Health Center' },
-    { id: 'EVT-4', date: 'Nov 22, 2026', title: 'Sangguniang Kabataan (SK) Leadership Seminar', location: 'Session Hall B' }
-];
+    DAYS_LIST.forEach((dayName, idx) => {
+        const currentDate = new Date(baseDate);
+        currentDate.setDate(baseDate.getDate() + dayOffset + idx);
+        const dateStr = currentDate.toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' });
 
-const DEFAULT_FORM_REQUESTS = [
-    { code: 'CLAIM-894014', docType: 'Certificate of Residency', applicant: 'Raphael Gabion', purpose: 'Scholarship Application', status: 'Ready for Pickup', date: 'Nov 11, 2026', fee: '₱50.00' }
-];
+        SHIFTS_LIST.forEach(shift => {
+            const count = Math.floor(Math.random() * 2) + 1; // 1 or 2 officials (Max 2)
+            const shuffled = [...OFFICIALS_POOL].sort(() => 0.5 - Math.random());
+            const selected = shuffled.slice(0, count);
+            const officialsStr = selected.map(o => `${o.name} (${o.role})`).join(', ');
 
-const DUTY_SHIFTS = [
-    { id: 'morning', name: 'Morning Shift', timeRange: '08:00 AM - 04:00 PM', officials: [{ name: 'Kagawad Juan Dela Cruz', role: 'Duty Desk Lead', phone: '09178880011', station: 'Main Desk Hall A' }, { name: 'Kagawad Elena Roxas', role: 'Peace & Order Duty', phone: '09187770022', station: 'Barangay Outpost 1' }] },
-    { id: 'afternoon', name: 'Evening Shift', timeRange: '04:00 PM - 12:00 AM', officials: [{ name: 'Kagawad Roberto Tan', role: 'Night Supervisor', phone: '09205550033', station: 'Main Desk Hall A' }, { name: 'Tanod Mario Gomez', role: 'Patrol Lead', phone: '09994440044', station: 'Mobile Unit' }] },
-    { id: 'graveyard', name: 'Graveyard Shift', timeRange: '12:00 AM - 08:00 AM', officials: [{ name: 'Kagawad Antonio Santos', role: 'Overnight Officer', phone: '09173330055', station: 'Main Desk Hall A' }, { name: 'Tanod Carlos Reyes', role: 'Surveillance Officer', phone: '09182220066', station: 'CCTV Monitoring' }] }
-];
+            roster.push({
+                day: dayName,
+                date: dateStr,
+                shift: `${shift.name} (${shift.time})`,
+                officials: officialsStr,
+                officialList: selected,
+                station: shift.station
+            });
+        });
+    });
+    return roster;
+}
 
-
-// ==========================================
-// 2. LOCAL STORAGE SEED INITIALIZATION
-// ==========================================
-function initLocalStorage() {
-    if (!localStorage.getItem('brgy_reports')) {
-        localStorage.setItem('brgy_reports', JSON.stringify(DEFAULT_REPORTS));
+// Get or seed persistent weekly schedule with strict validation fallback
+function getWeeklyRoster() {
+    let saved = localStorage.getItem('brgy_weekly_roster');
+    if (!saved) {
+        const newRoster = generateRandomizedWeeklyRoster();
+        localStorage.setItem('brgy_weekly_roster', JSON.stringify(newRoster));
+        return newRoster;
     }
-    if (!localStorage.getItem('brgy_announcements')) {
-        localStorage.setItem('brgy_announcements', JSON.stringify(DEFAULT_ANNOUNCEMENTS));
-    }
-    if (!localStorage.getItem('brgy_events')) {
-        localStorage.setItem('brgy_events', JSON.stringify(DEFAULT_EVENTS));
-    }
-    if (!localStorage.getItem('brgy_form_requests')) {
-        localStorage.setItem('brgy_form_requests', JSON.stringify(DEFAULT_FORM_REQUESTS));
+    try {
+        const parsed = JSON.parse(saved);
+        if (!Array.isArray(parsed) || parsed.length !== 14 || parsed.some(r => r.shift.includes('Graveyard'))) {
+            const newRoster = generateRandomizedWeeklyRoster();
+            localStorage.setItem('brgy_weekly_roster', JSON.stringify(newRoster));
+            return newRoster;
+        }
+        return parsed;
+    } catch(e) {
+        const newRoster = generateRandomizedWeeklyRoster();
+        localStorage.setItem('brgy_weekly_roster', JSON.stringify(newRoster));
+        return newRoster;
     }
 }
 
+const WEEKLY_ROSTER_DATA = getWeeklyRoster();
+
+function getTomorrowDateString() {
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const yyyy = tomorrow.getFullYear();
+    const mm = String(tomorrow.getMonth() + 1).padStart(2, '0');
+    const dd = String(tomorrow.getDate()).padStart(2, '0');
+    return `${yyyy}-${mm}-${dd}`;
+}
 
 // ==========================================
-// 3. APPOINTMENT MODAL CONTROLLERS & LOGIC
+// 2. MATRIX RENDERER & MODAL CONTROLLERS
 // ==========================================
-window.openAppointmentModal = function() {
+function renderWeeklyMatrix() {
+    const roster = getWeeklyRoster();
+    const htmlRows = roster.map(r => `
+        <tr class="hover:bg-slate-50 border-b border-slate-100">
+            <td class="py-3.5 px-4 font-bold text-slate-900">${r.day}<br><span class="text-xs font-normal text-slate-500">${r.date}</span></td>
+            <td class="py-3.5 px-4 font-medium text-brand-700">${r.shift.split('(')[0]}</td>
+            <td class="py-3.5 px-4 text-xs font-mono">${r.shift.includes('(') ? r.shift.split('(')[1].replace(')', '') : ''}</td>
+            <td class="py-3.5 px-4 text-xs font-medium text-slate-800">${r.officials}</td>
+            <td class="py-3.5 px-4 text-xs font-medium text-slate-600">${r.station}</td>
+        </tr>
+    `).join('');
+
+    const tbodies = document.querySelectorAll('#weeklyScheduleBody, #weeklyScheduleBodyModal');
+    tbodies.forEach(tb => { tb.innerHTML = htmlRows; });
+}
+
+function openAppointmentModal() {
     const modal = document.getElementById('appointmentModal');
     if (modal) {
         modal.classList.remove('hidden');
         const dateInput = document.getElementById('apptDate');
-        if (dateInput && !dateInput.value) {
-            dateInput.value = new Date().toISOString().split('T')[0];
+        if (dateInput) {
+            const minTomorrow = getTomorrowDateString();
+            dateInput.min = minTomorrow;
+            if (!dateInput.value || dateInput.value < minTomorrow) {
+                dateInput.value = minTomorrow;
+            }
         }
         updateModalOfficials();
     }
-};
+}
 
-window.closeAppointmentModal = function() {
+function closeAppointmentModal() {
     const modal = document.getElementById('appointmentModal');
     if (modal) {
         modal.classList.add('hidden');
         resetAppointmentForm();
     }
-};
+}
 
-window.openWeeklyRosterModal = function() {
+function openWeeklyRosterModal() {
     const modal = document.getElementById('weeklyRosterModal');
     if (modal) {
         modal.classList.remove('hidden');
         renderWeeklyMatrix();
     }
-};
+}
 
-window.closeWeeklyRosterModal = function() {
+function closeWeeklyRosterModal() {
     const modal = document.getElementById('weeklyRosterModal');
     if (modal) modal.classList.add('hidden');
-};
+}
 
-window.closeReportSuccessModal = function() {
+function closeReportSuccessModal() {
     const modal = document.getElementById('reportSuccessModal');
     if (modal) modal.classList.add('hidden');
-};
+}
 
 function updateModalOfficials() {
-    const dateVal = document.getElementById('apptDate').value;
+    const dateInput = document.getElementById('apptDate');
+    const timeSlotSelect = document.getElementById('appTimeSlot');
     const officialSelect = document.getElementById('apptOfficial');
-    if (!officialSelect) return;
+    if (!dateInput || !officialSelect) return;
 
-    let defaultOfficials = [
-        'Kagawad Juan Dela Cruz — Duty Desk Lead',
-        'Kagawad Elena Roxas — Peace & Order',
-        'Kagawad Roberto Tan — Night Supervisor',
-        'Tanod Mario Gomez — Patrol Lead'
-    ];
-
-    let options = defaultOfficials;
-
-    if (typeof WEEKLY_ROSTER_DATA !== 'undefined' && WEEKLY_ROSTER_DATA.length > 0 && dateVal) {
-        const match = WEEKLY_ROSTER_DATA.filter(r => {
-            try {
-                return new Date(r.date).toDateString() === new Date(dateVal).toDateString();
-            } catch(e) { return false; }
-        });
-        if (match.length > 0) {
-            let extracted = [];
-            match.forEach(m => {
-                m.officials.split(',').forEach(off => {
-                    let clean = off.trim().replace(/\(On-Duty\)/gi, '').trim();
-                    clean = clean.replace(/\(([^)]+)\)/g, '— $1');
-                    if (clean && !extracted.includes(clean)) extracted.push(clean);
-                });
-            });
-            if (extracted.length > 0) options = extracted;
-        }
+    const minTomorrow = getTomorrowDateString();
+    if (dateInput.value < minTomorrow) {
+        dateInput.value = minTomorrow;
     }
 
-    officialSelect.innerHTML = '<option value="">Select On-Duty Official...</option>' + 
-        options.map(o => `<option value="${o}">${o}</option>`).join('');
+    const selectedDateVal = dateInput.value;
+    const d = new Date(selectedDateVal + 'T00:00:00');
+    const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const selectedDayName = dayNames[d.getDay()];
+
+    const roster = getWeeklyRoster();
+    const matchingDayShifts = roster.filter(r => r.day === selectedDayName);
+
+    let targetShiftName = 'Morning Shift';
+    const selectedSlot = timeSlotSelect ? timeSlotSelect.value : '';
+
+    if (selectedSlot.includes('PM') && (selectedSlot.includes('04:') || selectedSlot.includes('05:') || selectedSlot.includes('06:'))) {
+        targetShiftName = 'Evening Shift';
+    }
+
+    let targetShiftObj = matchingDayShifts.find(s => s.shift.includes(targetShiftName));
+    if (!targetShiftObj && matchingDayShifts.length > 0) {
+        targetShiftObj = matchingDayShifts[0];
+    }
+
+    let onDutyOfficials = [];
+    if (targetShiftObj && targetShiftObj.officialList && Array.isArray(targetShiftObj.officialList)) {
+        targetShiftObj.officialList.forEach(off => {
+            const itemStr = `${off.name} — ${off.role}`;
+            if (!onDutyOfficials.includes(itemStr)) {
+                onDutyOfficials.push(itemStr);
+            }
+        });
+    }
+
+    if (onDutyOfficials.length === 0) {
+        onDutyOfficials = [
+            'Kagawad Juan Dela Cruz — Duty Desk Lead',
+            'Kagawad Elena Roxas — Peace & Order Lead'
+        ];
+    }
+
+    officialSelect.innerHTML = `<option value="">Select On-Duty Official for ${selectedDayName} (${targetShiftName})...</option>` +
+        onDutyOfficials.map(o => `<option value="${o}">${o}</option>`).join('');
 }
 
 function handleAppointmentSubmit(e) {
@@ -161,6 +205,23 @@ function handleAppointmentSubmit(e) {
     const date = document.getElementById('apptDate').value;
     const time = document.getElementById('appTimeSlot').value;
     const notes = document.getElementById('apptNotes') ? document.getElementById('apptNotes').value : '';
+
+    const newAppointment = {
+        id: code,
+        residentName: name,
+        phone: phone,
+        service: service,
+        official: official,
+        date: date,
+        timeSlot: time,
+        notes: notes,
+        status: 'Pending',
+        createdAt: new Date().toLocaleString()
+    };
+
+    const appointments = JSON.parse(localStorage.getItem('brgy_appointments') || '[]');
+    appointments.unshift(newAppointment);
+    localStorage.setItem('brgy_appointments', JSON.stringify(appointments));
 
     const ticket = document.getElementById('appointmentTicket');
     const form = document.getElementById('appointmentForm');
@@ -177,8 +238,8 @@ function handleAppointmentSubmit(e) {
                             <i class="fa-solid fa-circle-check"></i>
                         </div>
                         <div>
-                            <h4 class="font-extrabold text-sm text-white leading-tight">Appointment Confirmed!</h4>
-                            <p class="text-[11px] text-emerald-100 font-medium">Barangay San Jose Consultation Pass</p>
+                            <h4 class="font-extrabold text-sm text-white leading-tight">Appointment Booked Successfully!</h4>
+                            <p class="text-[11px] text-emerald-100 font-medium">Barangay San Jose Official Consultation Pass</p>
                         </div>
                     </div>
                     <span class="font-mono font-bold bg-white/20 text-white px-2.5 py-1 rounded-lg text-xs tracking-wide">${code}</span>
@@ -191,7 +252,7 @@ function handleAppointmentSubmit(e) {
                         <span class="text-[11px] text-emerald-200">${phone}</span>
                     </div>
                     <div class="bg-white/10 rounded-xl p-3">
-                        <span class="text-[10px] uppercase font-bold text-emerald-200 block mb-0.5">Assigned Official</span>
+                        <span class="text-[10px] uppercase font-bold text-emerald-200 block mb-0.5">On-Duty Official</span>
                         <strong class="text-white text-xs block">${official}</strong>
                     </div>
                     <div class="bg-white/10 rounded-xl p-3">
@@ -199,7 +260,7 @@ function handleAppointmentSubmit(e) {
                         <span class="font-medium text-white">${service}</span>
                     </div>
                     <div class="bg-white/10 rounded-xl p-3">
-                        <span class="text-[10px] uppercase font-bold text-emerald-200 block mb-0.5">Schedule</span>
+                        <span class="text-[10px] uppercase font-bold text-emerald-200 block mb-0.5">Schedule Date & Time</span>
                         <span class="font-medium text-white">${date} @ ${time}</span>
                     </div>
                 </div>
@@ -217,7 +278,7 @@ function handleAppointmentSubmit(e) {
     }
 }
 
-window.resetAppointmentForm = function() {
+function resetAppointmentForm() {
     const form = document.getElementById('appointmentForm');
     const ticket = document.getElementById('appointmentTicket');
     if (form) {
@@ -228,63 +289,8 @@ window.resetAppointmentForm = function() {
         ticket.classList.add('hidden');
         ticket.innerHTML = '';
     }
-};
-
-
-// ==========================================
-// 4. REAL-TIME CLOCK & ACTIVE DUTY MONITOR
-// ==========================================
-function initClockAndShift() {
-    const updateTime = () => {
-        const now = new Date();
-        const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-        const dateStr = now.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
-        const timeEl = document.getElementById('currentTimeStr');
-        if (timeEl) timeEl.innerText = `${dateStr} • ${timeStr}`;
-
-        const currentHour = now.getHours();
-        let activeShift = DUTY_SHIFTS[0];
-        if (currentHour >= 16 && currentHour < 24) activeShift = DUTY_SHIFTS[1];
-        if (currentHour >= 0 && currentHour < 8) activeShift = DUTY_SHIFTS[2];
-
-        const cardsContainer = document.getElementById('currentDutyCards');
-        if (cardsContainer) {
-            cardsContainer.innerHTML = activeShift.officials.map(o => `
-                <div class="bg-slate-50 border border-emerald-200 rounded-xl p-4 flex items-center justify-between shadow-sm">
-                    <div>
-                        <span class="text-[10px] font-extrabold uppercase bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded">Active Duty</span>
-                        <h4 class="font-bold text-slate-900 text-sm mt-1">${o.name}</h4>
-                        <p class="text-xs text-slate-500">${o.role} • ${o.station}</p>
-                    </div>
-                    <a href="tel:${o.phone}" class="bg-emerald-600 hover:bg-emerald-700 text-white w-9 h-9 rounded-full flex items-center justify-center text-sm shadow">
-                        <i class="fa-solid fa-phone"></i>
-                    </a>
-                </div>
-            `).join('');
-        }
-    };
-    updateTime();
-    setInterval(updateTime, 1000);
 }
 
-function renderWeeklyMatrix() {
-    const tbody = document.getElementById('weeklyScheduleBody');
-    if (!tbody) return;
-    tbody.innerHTML = WEEKLY_ROSTER_DATA.map(r => `
-        <tr class="hover:bg-slate-50 border-b border-slate-100">
-            <td class="py-3 px-4 font-bold text-slate-900">${r.day}<br><span class="text-xs font-normal text-slate-500">${r.date}</span></td>
-            <td class="py-3 px-4 font-medium text-brand-700">${r.shift.split('(')[0]}</td>
-            <td class="py-3 px-4 text-xs font-mono">${r.shift.includes('(') ? r.shift.split('(')[1].replace(')', '') : ''}</td>
-            <td class="py-3 px-4 text-xs">${r.officials}</td>
-            <td class="py-3 px-4 text-xs font-medium text-slate-600">${r.station}</td>
-        </tr>
-    `).join('');
-}
-
-
-// ==========================================
-// 5. INCIDENT & HAZARD REPORTING
-// ==========================================
 function handleReportSubmit(e) {
     e.preventDefault();
     const trackingID = `BRGY-2026-${Math.floor(1000 + Math.random() * 9000)}`;
@@ -341,18 +347,18 @@ function quickTrack(id) {
 }
 
 function trackComplaint() {
-    const val = document.getElementById('trackInput').value.trim().toUpperCase();
-    if (val) quickTrack(val);
+    const input = document.getElementById('trackInput');
+    if (input) {
+        const val = input.value.trim().toUpperCase();
+        if (val) quickTrack(val);
+    }
 }
 
-
-// ==========================================
-// 6. FORM REQUESTS & PRINT TICKET
-// ==========================================
 function updateFormFeeNotice() {
-    const type = document.getElementById('formType').value;
+    const typeEl = document.getElementById('formType');
     const badge = document.getElementById('feeBadge');
-    if (!badge) return;
+    if (!typeEl || !badge) return;
+    const type = typeEl.value;
     if (type.includes('Indigency') || type.includes('Job Seeker')) {
         badge.innerText = 'FREE (RA 11261)';
     } else {
@@ -411,14 +417,53 @@ function printClaimSlip() {
     window.print();
 }
 
+function initClockAndShift() {
+    const updateTime = () => {
+        const now = new Date();
+        const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        const dateStr = now.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
+        const timeEl = document.getElementById('currentTimeStr');
+        if (timeEl) timeEl.innerText = `${dateStr} • ${timeStr}`;
 
-// ==========================================
-// 7. EVENTS & TIMELINE RENDERERS
-// ==========================================
+        const currentHour = now.getHours();
+        const roster = getWeeklyRoster();
+        const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        const todayName = dayNames[now.getDay()];
+
+        let shiftIdx = 0;
+        if (currentHour >= 16 || currentHour < 8) shiftIdx = 1;
+
+        const currentShiftData = roster.find(r => r.day === todayName && r.shift.includes(SHIFTS_LIST[shiftIdx].name)) || roster[0];
+
+        const cardsContainer = document.getElementById('currentDutyCards');
+        if (cardsContainer && currentShiftData && currentShiftData.officialList) {
+            cardsContainer.innerHTML = currentShiftData.officialList.map(o => `
+                <div class="bg-slate-50 border border-emerald-200 rounded-xl p-4 flex items-center justify-between shadow-sm">
+                    <div>
+                        <span class="text-[10px] font-extrabold uppercase bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded">Active Duty</span>
+                        <h4 class="font-bold text-slate-900 text-sm mt-1">${o.name}</h4>
+                        <p class="text-xs text-slate-500">${o.role} • ${currentShiftData.station}</p>
+                    </div>
+                    <a href="tel:09171234567" class="bg-emerald-600 hover:bg-emerald-700 text-white w-9 h-9 rounded-full flex items-center justify-center text-sm shadow">
+                        <i class="fa-solid fa-phone"></i>
+                    </a>
+                </div>
+            `).join('');
+        }
+    };
+    updateTime();
+    setInterval(updateTime, 1000);
+}
+
+function initLocalStorage() {
+    getWeeklyRoster();
+}
+
 function renderTodaySchedule() {
     const list = document.getElementById('todayScheduleList');
     if (!list) return;
-    const announcements = JSON.parse(localStorage.getItem('brgy_announcements') || JSON.stringify(DEFAULT_ANNOUNCEMENTS));
+    const announcements = JSON.parse(localStorage.getItem('brgy_announcements') || '[]');
+    if (announcements.length === 0) return;
     
     list.innerHTML = announcements.map(item => `
         <div class="relative">
@@ -435,7 +480,8 @@ function renderTodaySchedule() {
 function renderCalendar() {
     const grid = document.getElementById('calendarEventsGrid');
     if (!grid) return;
-    const events = JSON.parse(localStorage.getItem('brgy_events') || JSON.stringify(DEFAULT_EVENTS));
+    const events = JSON.parse(localStorage.getItem('brgy_events') || '[]');
+    if (events.length === 0) return;
     
     grid.innerHTML = events.map(ev => `
         <div class="border border-slate-200 rounded-xl p-4 bg-white shadow-sm">
@@ -458,3 +504,25 @@ function initDates() {
     if (tmEl) tmEl.innerText = tomorrow.toLocaleDateString('en-US', opt);
     if (tsEl) tsEl.innerText = today.toLocaleDateString('en-US', opt);
 }
+
+// BIND ALL FUNCTIONS TO WINDOW SCOPE
+window.renderWeeklyMatrix = renderWeeklyMatrix;
+window.openAppointmentModal = openAppointmentModal;
+window.closeAppointmentModal = closeAppointmentModal;
+window.openWeeklyRosterModal = openWeeklyRosterModal;
+window.closeWeeklyRosterModal = closeWeeklyRosterModal;
+window.closeReportSuccessModal = closeReportSuccessModal;
+window.updateModalOfficials = updateModalOfficials;
+window.handleAppointmentSubmit = handleAppointmentSubmit;
+window.resetAppointmentForm = resetAppointmentForm;
+window.handleReportSubmit = handleReportSubmit;
+window.quickTrack = quickTrack;
+window.trackComplaint = trackComplaint;
+window.updateFormFeeNotice = updateFormFeeNotice;
+window.handleFormDraftSubmit = handleFormDraftSubmit;
+window.printClaimSlip = printClaimSlip;
+window.initClockAndShift = initClockAndShift;
+window.initLocalStorage = initLocalStorage;
+window.renderTodaySchedule = renderTodaySchedule;
+window.renderCalendar = renderCalendar;
+window.initDates = initDates;
